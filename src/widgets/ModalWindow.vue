@@ -10,32 +10,27 @@
       <v-card-actions>
         <slot name="modal-actions" />
         <v-btn
-          @click="dialog = false"
+          @click="emit('closeDialog')"
           variant="plain"
-          color="primary"
         >
           Закрыть
         </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-btn
-    @click="dialog = true"
-    color="primary"
-  >
-    {{ buttonText }}
-  </v-btn>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {toRef} from "vue";
 
 interface Props {
+  dialog: boolean;
   modalTitle: string;
-  buttonText: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
-const dialog = ref(false);
+const emit = defineEmits(['closeDialog']);
+
+const dialog = toRef(() => props.dialog);
 </script>

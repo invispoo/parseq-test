@@ -7,53 +7,53 @@ type HighestTier = 'IV' | 'III' | 'II-D' | 'II-C' | 'I-B' | 'I-A';
 type AcmgSignificances = 'BENIGN' | 'LIKELY_BENIGN' | 'UNCERTAIN' | 'LIKELY_PATHOGENIC' | 'PATHOGENIC';
 
 type AnalysisIdentier = {
-    analysisId: string;
-    sampleName: string;
-    sequencingRunName: string;
+  analysisId: string;
+  sampleName: string;
+  sequencingRunName: string;
 };
 
 type TherapeuticAnnotation = {
-    organizationName: string;
-    isPublic: boolean;
-    evidenceLevel: HighestTier;
-    referenceLinks: string[];
-    tumorType: string;
-    drugTradeName: string;
-    drugName: string;
-    sensitivity: string;
+  organizationName: string;
+  isPublic: boolean;
+  evidenceLevel: HighestTier;
+  referenceLinks: string[];
+  tumorType: string;
+  drugTradeName: string;
+  drugName: string;
+  sensitivity: string;
 };
 
 type DiagnosticAnnotation = {
-    organizationName: string;
-    isPublic: boolean;
-    evidenceLevel: HighestTier;
-    referenceLinks: string[];
-    tumorType: string;
-    tumorSubtype: string;
+  organizationName: string;
+  isPublic: boolean;
+  evidenceLevel: HighestTier;
+  referenceLinks: string[];
+  tumorType: string;
+  tumorSubtype: string;
 };
 
 type PrognosticAnnotation = {
-    organizationName: string;
-    isPublic: boolean;
-    evidenceLevel: HighestTier;
-    referenceLinks: string[];
-    tumorType: string;
-    prognosis: string;
+  organizationName: string;
+  isPublic: boolean;
+  evidenceLevel: HighestTier;
+  referenceLinks: string[];
+  tumorType: string;
+  prognosis: string;
 };
 
 type LowTierAnnotation = {
-    organizationName: string;
-    isPublic: boolean;
-    evidenceLevel: HighestTier;
-    referenceLinks: string[];
+  organizationName: string;
+  isPublic: boolean;
+  evidenceLevel: HighestTier;
+  referenceLinks: string[];
 };
 
 type AcmgAnnotation = {
-    organizationName: string;
-    isPublic: boolean;
-    acmgSignificances: AcmgSignificances;
-    theses: object;
-    transcriptId: string;
+  organizationName: string;
+  isPublic: boolean;
+  acmgSignificances: AcmgSignificances;
+  theses: object;
+  transcriptId: string;
 };
 
 export class Mutation {
@@ -87,6 +87,6 @@ export class Mutation {
           pageSize: pageSize,
         },
       })
-    ).data;
+    ).data.resources;
   }
 }

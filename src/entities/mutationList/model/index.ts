@@ -1,13 +1,23 @@
 import { defineStore } from 'pinia';
-import { MutationList } from "./MutationList.ts";
-import { Mutation } from "../../mutation/model/Mutation.ts";
-import {ref} from "vue";
+import { MutationList } from './MutationList.ts';
+import { Mutation } from '../../mutation/model/Mutation.ts';
+import { reactive } from 'vue';
 
 export const useMutationListStore = defineStore('mutationList', () => {
-    const mutationList = ref<MutationList[]>([]);
-    function addList(name: string, mutations: Mutation[]) {
-      mutationList.value.push(new MutationList(name, mutations));
-    }
+  const mutationLists = reactive<MutationList[]>([]);
 
-    return { mutationList, addList }
+  function addList(name: string, mutations: Mutation[]) {
+    mutationLists.push(new MutationList(name, mutations));
+  }
+  function updateName(name: string, list: MutationList) {
+    list.name = name;
+  }
+  function updateMutations(mutations: Mutation[], list: MutationList) {
+    list.mutations = mutations;
+  }
+  function deleteList(list: MutationList) {
+    mutationLists.splice(mutationLists.indexOf(list), 1);
+  }
+
+  return { mutationLists, addList, updateName, updateMutations, deleteList };
 });

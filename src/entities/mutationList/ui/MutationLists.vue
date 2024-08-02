@@ -1,12 +1,12 @@
 <template>
   <v-row v-bind="$attrs">
     <v-col
-        v-for="mutationList in mutationLists"
-        :cols="4"
+      v-for="mutationList in mutationLists"
+      :cols="4"
     >
-      <v-card @click="">
+      <v-card>
         <v-card-title>
-          {{ mutationList.name}}
+          {{ mutationList.name }}
         </v-card-title>
         <v-card-text>
           <v-list>
@@ -15,21 +15,28 @@
             </v-list-item>
           </v-list>
         </v-card-text>
+        <MutationListActionTooltip
+          @update-list="updateList(mutationList)"
+          @delete-list="updateList(mutationList)"
+        />
       </v-card>
     </v-col>
   </v-row>
 </template>
 
 <script setup lang="ts">
-import { MutationList } from "../model/MutationList.ts";
+import { MutationList } from '../model/MutationList.ts';
+import MutationListActionTooltip from '../../../features/mutationList/MutationListActionTooltip.vue';
 
 interface Props {
-  mutationLists: MutationList[],
+  mutationLists: MutationList[];
 }
 
 defineProps<Props>();
+
+const updateList = (list: MutationList) => {};
+
+const deleteList = (list: MutationList) => {};
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
