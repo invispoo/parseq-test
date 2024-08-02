@@ -1,5 +1,8 @@
 <template>
-  <v-dialog v-model="dialog">
+  <v-dialog
+      v-model="dialog"
+      v-bind="$attrs"
+  >
     <v-card>
       <v-card-title class="pt-5 pl-5">
         {{ modalTitle }}
@@ -21,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import {toRef} from "vue";
+import {onBeforeMount, onBeforeUnmount, toRef} from "vue";
 
 interface Props {
   dialog: boolean;

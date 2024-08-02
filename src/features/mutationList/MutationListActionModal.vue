@@ -1,18 +1,20 @@
 <template>
   <v-row>
     <v-col :cols="8">
+      <MutationSearch
+          class="pb-4 px-0"
+      />
       <MutationTable
-        :mutations="mutations"
-        :selected-mutations="isEditMode ? editingMutation!.mutations : selectedMutations"
+        :selected-mutations="selectedMutations"
         @add-mutation="addMutation"
       />
     </v-col>
     <v-col :cols="4">
       <MutationSelection
-        :list-name="isEditMode ? editingMutation!.name : listName"
-        :selected-mutations="isEditMode ? editingMutation!.mutations : selectedMutations"
+        :list-name="listName"
+        :selected-mutations="selectedMutations"
         @update-name="(newName: string) => listName = newName"
-        @save-list="createList"
+        @save-list="isEditMode ? updateList() : createList()"
         @delete-mutation="deleteMutation"
       />
     </v-col>
@@ -20,33 +22,48 @@
 </template>
 
 <script setup lang="ts">
-import MutationSelection from '../../entities/mutation/ui/MutationSelection.vue';
+import MutationSelection from '../mutation/MutationSelection.vue';
 import MutationTable from '../../entities/mutation/ui/MutationTable.vue';
 import { Mutation } from '../../entities/mutation/model/Mutation.ts';
-import { inject, ref } from 'vue';
+import {inject, onBeforeMount, ref, unref, watch} from 'vue';
 import { useMutationListStore } from '../../entities/mutationList/model';
 import { MutationList } from '../../entities/mutationList/model/MutationList.ts';
+import MutationSearch from "../mutation/MutationSearch.vue";
+import {useMutationStore} from "../../entities/mutation/model";
 
 interface Props {
   isEditMode?: boolean;
-  editingMutation?: MutationList;
-  mutations: Mutation[];
+  editingList?: MutationList;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
+const emit = defineEmits(['closeDialog']);
+
+const mutationStore = useMutationStore();
 const mutationListStore = useMutationListStore();
 
-const listName = ref<string>('');
+const listName = ref<string>(props.isEditMode ? unref(props.editingList!.name) : '');
 
-const selectedMutations = ref<Mutation[]>([]);
+const selectedMutations = ref<Mutation[]>(props.isEditMode ?
+    JSON.parse(JSON.stringify(props.editingList!.mutations)) : []);
 
 const createList = () => {
   mutationListStore.addList(listName.value, selectedMutations.value);
   listName.value = '';
   selectedMutations.value = [];
-  closeDialog();
+  emit('closeDialog');
 };
+
+const updateList = () => {
+  if (listName.value !== props.editingList!.name) {
+    mutationListStore.updateName(listName.value, props.editingList!);
+  }
+  if (selectedMutations.value !== props.editingList!.mutations) {
+    mutationListStore.updateMutations(selectedMutations.value, props.editingList!)
+  }
+  emit('closeDialog');
+}
 
 const addMutation = (item: Mutation) => {
   selectedMutations.value.push(item);

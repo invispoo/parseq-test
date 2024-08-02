@@ -18,6 +18,9 @@ export const useMutationListStore = defineStore('mutationList', () => {
   function deleteList(list: MutationList) {
     mutationLists.splice(mutationLists.indexOf(list), 1);
   }
+  function searchByName(name: string) {
+    return mutationLists.filter(list => list.name.toLowerCase().includes(name.toLowerCase()));
+  }
 
-  return { mutationLists, addList, updateName, updateMutations, deleteList };
+  return { mutationLists, addList, updateName, updateMutations, deleteList, searchByName };
 });

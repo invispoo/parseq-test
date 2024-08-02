@@ -1,8 +1,17 @@
 <template>
   <v-app full-height>
-    <v-container class="w-50">
-      <div class="w-100 pb-4 d-flex align-center justify-space-between">
+    <v-container class="w-75">
+      <div class="w-100 d-flex align-center justify-space-between">
         <h1>Списки мутаций</h1>
+        <v-text-field
+            v-model="listNameSearch"
+            :disabled="!mutationListStore.mutationLists.length"
+            class="px-8"
+            density="compact"
+            variant="outlined"
+            hide-details
+            placeholder="Поиск по спискам"
+        />
         <v-btn
             @click="addMutationDialog = true"
             color="primary"
@@ -15,7 +24,7 @@
           @close-dialog="addMutationDialog = false"
         >
           <template #modal-content>
-            <MutationListActionModal :mutations="mutationList" />
+            <MutationListActionModal @close-dialog="addMutationDialog = false"/>
           </template>
         </ModalWindow>
       </div>
@@ -26,30 +35,30 @@
         Вы еще не добавили ни одного списка.
       </span>
       <MutationLists
-        class="mt-5"
-        :mutation-lists="mutationListStore.mutationLists"
+        class="mt-10"
+        :mutation-lists="listNameSearch ? mutationListStore.searchByName(listNameSearch) : mutationListStore.mutationLists"
       />
     </v-container>
   </v-app>
 </template>
 
 <script setup lang="ts">
-import {onBeforeMount, reactive, ref} from 'vue';
-import { Mutation } from '../entities/mutation/model/Mutation.ts';
+import { ref } from 'vue';
 import { useMutationListStore } from '../entities/mutationList/model';
 import MutationLists from '../entities/mutationList/ui/MutationLists.vue';
 import MutationListActionModal from '../features/mutationList/MutationListActionModal.vue';
 import ModalWindow from "../widgets/ModalWindow.vue";
-
-const mutationList = reactive([]);
+import {useMutationStore} from "../entities/mutation/model";
 
 const mutationListStore = useMutationListStore();
 
+const mutationStore = useMutationStore();
+
+mutationStore.loadMutations();
+
 const addMutationDialog = ref<boolean>(false);
 
-onBeforeMount(async () => {
-  Object.assign(mutationList, await Mutation.fetchAllByPage(0, 100));
-});
+const listNameSearch = ref<string>('');
 </script>
 
 <style lang="scss">

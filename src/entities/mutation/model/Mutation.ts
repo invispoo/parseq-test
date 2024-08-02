@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 type MutationType = 'SNP' | 'FUSION' | 'CNV';
 
 type HighestTier = 'IV' | 'III' | 'II-D' | 'II-C' | 'I-B' | 'I-A';
@@ -78,15 +76,4 @@ export class Mutation {
   drugs: string[];
   maybeReferenceGenomeContigId?: string;
   maybeChrNumber?: string;
-
-  static async fetchAllByPage(pageNumber: number, pageSize: number): Promise<Mutation[]> {
-    return (
-      await axios.get('/mutations', {
-        params: {
-          pageZeroBasedNumber: pageNumber,
-          pageSize: pageSize,
-        },
-      })
-    ).data.resources;
-  }
 }
