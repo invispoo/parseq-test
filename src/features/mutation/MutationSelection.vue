@@ -7,9 +7,10 @@
     density="compact"
     variant="outlined"
   />
+
   <v-list
-      v-if="selectedMutations.length"
-      class="mutation-list"
+    v-if="selectedMutations.length"
+    class="mutation-list"
   >
     <v-list-item v-for="(mutation, index) in selectedMutations">
       <v-card variant="plain">
@@ -25,9 +26,10 @@
       </template>
     </v-list-item>
   </v-list>
+
   <v-btn
-      @click="emit('saveList')"
-      :disabled="!listName || listName.length < 3"
+    @click="emit('saveList')"
+    :disabled="!listName || listName.length < 3"
   >
     Сохранить
   </v-btn>
@@ -46,15 +48,15 @@ defineProps<Props>();
 const nameRules = [
   (value: string) => {
     if (value) {
-      return true
+      return true;
     }
-    return 'Название не должно быть пустым'
+    return 'Название не должно быть пустым';
   },
   (value: string) => {
     if (value?.length >= 3) {
-      return true
+      return true;
     }
-    return 'Название должно содержать 3 или более символов'
+    return 'Название должно содержать 3 или более символов';
   },
 ];
 

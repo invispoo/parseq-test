@@ -11,20 +11,23 @@
         <td v-for="column in columns">
           <template v-if="column.key === 'addMutation'">
             <v-btn
-                @click="emit('addMutation', item)"
-                :disabled="!!selectedMutations.find((mutation) => mutation.mutationId === item.mutationId)"
-                size="x-large"
-                variant="plain"
+              @click="emit('addMutation', item)"
+              :disabled="!!selectedMutations.find((mutation) => mutation.mutationId === item.mutationId)"
+              size="x-large"
+              variant="plain"
             >
               <v-icon icon="mdi-plus" />
             </v-btn>
           </template>
-          <template v-if="item.mutationType === 'SNP' && column.key === 'mutationId'">
+
+          <template v-else-if="item.mutationType === 'SNP' && column.key === 'mutationId'">
             {{ item.maybeHgvsGdna }}
           </template>
+
           <template v-else-if="column.key === 'acmgAnnotations'">
             {{ item.isAnnotatedByAcmg ? item.acmgAnnotations[0].acmgSignificances : '' }}
           </template>
+
           <template v-else>
             {{ item[column.key] }}
           </template>
@@ -36,8 +39,8 @@
 
 <script setup lang="ts">
 import { Mutation } from '../model/Mutation.ts';
-import {MutationTableHeader} from "../model/MutationTableHeader.ts";
-import {useMutationStore} from "../model";
+import { MutationTableHeader } from '../model/MutationTableHeader.ts';
+import { useMutationStore } from '../model';
 
 interface Props {
   selectedMutations: Mutation[];
@@ -47,7 +50,7 @@ defineProps<Props>();
 
 const emit = defineEmits(['addMutation']);
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE: number = 20;
 
 const mutationStore = useMutationStore();
 
@@ -80,7 +83,7 @@ const headers: MutationTableHeader[] = [
 
 .mutation-table {
   border: $table-border;
-  height: 70vh !important;
+  height: 60vh !important;
 }
 
 :deep(th:not(th:last-child)),

@@ -1,4 +1,4 @@
 export type MutationTableHeader = {
-    title: string,
-    key: string,
-}
+  title: string;
+  key: string;
+};

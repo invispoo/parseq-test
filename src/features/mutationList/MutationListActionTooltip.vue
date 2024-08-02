@@ -21,9 +21,5 @@
 </template>
 
 <script setup lang="ts">
-import ModalWindow from "../../widgets/ModalWindow.vue";
-import {ref} from "vue";
-import MutationListActionModal from "../../app/App.vue";
-
 const emit = defineEmits(['updateList', 'deleteList']);
 </script>
