@@ -14,6 +14,13 @@ export class MutationApi {
   }
 
   static async fetchTotalNumber(): Promise<number> {
-    return await this.fetchAllByPage(0, 0).data.resourcesTotalNumber;
+    return (
+      await axios.get('https://testapi2.parseq.pro/mutations', {
+        params: {
+          pageZeroBasedNumber: 0,
+          pageSize: 0,
+        },
+      })
+    ).data.resourcesTotalNumber;
   }
 }
