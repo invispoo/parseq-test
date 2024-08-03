@@ -1,8 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/mutations/:match*",
-      "destination": "https://testapi2.parseq.pro/mutations/:match*"
+
     }
   ]
 }
