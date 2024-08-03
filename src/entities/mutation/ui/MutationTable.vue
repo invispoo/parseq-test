@@ -1,10 +1,12 @@
 <template>
-  <v-data-table
+  <v-data-table-server
     :headers="headers"
     :items="mutationStore.searchValue ? mutationStore.searchById() : mutations"
-    :loading="mutationStore.isLoading"
+    :loading="isLoading"
+    v-model:page="page"
     :items-per-page="PAGE_SIZE"
-    :page="page"
+    :items-length="mutationStore.mutationsTotalNumber"
+    @update:options="loadMutations"
     class="mutation-table"
   >
     <template #item="{ item, columns }: { item: Mutation; columns: MutationTableHeader[] }">
@@ -35,7 +37,7 @@
         </td>
       </tr>
     </template>
-  </v-data-table>
+  </v-data-table-server>
 </template>
 
 <script setup lang="ts">
@@ -56,7 +58,15 @@ const emit = defineEmits(['addMutation']);
 const PAGE_SIZE: number = 20;
 const page = ref<number>(1);
 
-const mutations = await (async () => await MutationApi.fetchAllByPage(page.value - 1, PAGE_SIZE))();
+const mutations = ref<Mutation[]>([]);
+
+const isLoading = ref<boolean>(false);
+
+const loadMutations = async () => {
+  isLoading.value = true;
+  mutations.value = await MutationApi.fetchAllByPage(page.value - 1, PAGE_SIZE);
+  isLoading.value = false;
+};
 
 const mutationStore = useMutationStore();
 

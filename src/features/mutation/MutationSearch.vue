@@ -3,6 +3,7 @@
     v-model="mutationIdSearch"
     @update:model-value="mutationStore.updateSearchValue(mutationIdSearch)"
     :disabled="mutationStore.isLoading"
+    :loading="mutationStore.isLoading"
     density="compact"
     variant="outlined"
     hide-details
