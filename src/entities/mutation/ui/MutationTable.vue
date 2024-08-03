@@ -2,7 +2,7 @@
   <v-data-table
     :headers="headers"
     :items="mutationStore.searchValue ? mutationStore.searchById() : mutationStore.mutations"
-    :loading="mutationStore.isLoading"
+    :loading="mutationStore.isLoading || !mutationStore.mutations.length"
     :items-per-page="PAGE_SIZE"
     class="mutation-table"
   >

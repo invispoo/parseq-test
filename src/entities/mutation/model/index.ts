@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Mutation } from './Mutation.ts';
 import { reactive, ref } from 'vue';
-import {MutationApi, MutationApiResponse} from '../api/MutationApi.ts';
+import { MutationApi, MutationApiResponse } from '../api/MutationApi.ts';
 
 export const useMutationStore = defineStore('mutation', () => {
   const mutations = reactive<Mutation[]>([]);
@@ -11,16 +11,24 @@ export const useMutationStore = defineStore('mutation', () => {
   const RESPONSE_LENGTH: number = 5000;
 
   async function loadMutations() {
-    isLoading.value = true;
+
     MutationApi.fetchAllMutations(0, RESPONSE_LENGTH)
       .then(async (response: MutationApiResponse) => {
+        isLoading.value = true;
         mutations.push(...response.resources);
+
+        let arr = [];
         for (let i = 1; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
-          mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)));
+          arr.push(i);
+          //mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)));
         }
+        await Promise.all(arr.map(async (i) => mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)))));
+        isLoading.value = false;
       })
-      .catch((error) => console.error('При загрузке данных произошла ошибка:' + error));
-    isLoading.value = false;
+      .catch((error) => {
+        console.error('При загрузке данных произошла ошибка: ' + error);
+        isLoading.value = false;
+      });
   }
   function updateSearchValue(value: string) {
     searchValue.value = value;

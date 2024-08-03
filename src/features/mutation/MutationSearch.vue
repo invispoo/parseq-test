@@ -2,8 +2,8 @@
   <v-text-field
     v-model="mutationIdSearch"
     @update:model-value="mutationStore.updateSearchValue(mutationIdSearch)"
-    :disabled="mutationStore.isLoading"
-    :loading="mutationStore.isLoading"
+    :disabled="!mutationStore.mutations.length"
+    :loading="!mutationStore.mutations.length"
     density="compact"
     variant="outlined"
     hide-details
