@@ -12,7 +12,7 @@ export const useMutationStore = defineStore('mutation', () => {
 
   async function loadMutations() {
 
-    MutationApi.fetchAllMutations(0, RESPONSE_LENGTH)
+    MutationApi.fetchAllMutations(0, 1)
       .then(async (response: MutationApiResponse) => {
         isLoading.value = true;
         mutations.push(...response.resources);
