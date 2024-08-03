@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/mutations': 'https://testapi2.parseq.pro',
-      '/lists/create': 'https://testapi2.parseq.pro',
     },
+    cors: false,
   },
 });
