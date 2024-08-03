@@ -1,9 +1,10 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="mutationStore.searchValue ? mutationStore.searchById() : mutationStore.mutations"
+    :items="mutationStore.searchValue ? mutationStore.searchById() : mutations"
     :loading="mutationStore.isLoading"
     :items-per-page="PAGE_SIZE"
+    :page="page"
     class="mutation-table"
   >
     <template #item="{ item, columns }: { item: Mutation; columns: MutationTableHeader[] }">
@@ -39,8 +40,10 @@
 
 <script setup lang="ts">
 import { Mutation } from '../model/Mutation.ts';
+import { MutationApi } from '../api/MutationApi.ts';
 import { MutationTableHeader } from '../model/MutationTableHeader.ts';
 import { useMutationStore } from '../model';
+import {ref} from "vue";
 
 interface Props {
   selectedMutations: Mutation[];
@@ -51,6 +54,9 @@ defineProps<Props>();
 const emit = defineEmits(['addMutation']);
 
 const PAGE_SIZE: number = 20;
+const page = ref<number>(1);
+
+const mutations = await (async () => await MutationApi.fetchAllByPage(page.value - 1, PAGE_SIZE))();
 
 const mutationStore = useMutationStore();
 
