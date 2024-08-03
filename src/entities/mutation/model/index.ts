@@ -11,18 +11,21 @@ export const useMutationStore = defineStore('mutation', () => {
   const RESPONSE_LENGTH: number = 3000;
 
   async function loadMutations() {
-
     MutationApi.fetchAllMutations(0, 0)
       .then(async (response: MutationApiResponse) => {
         isLoading.value = true;
         mutations.push(...response.resources);
 
-        let arr = [];
-        for (let i = 1; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
-          arr.push(i);
-          //mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)));
+        const requestPagesNumber: number[] = [];
+        for (let i: number = 0; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
+          requestPagesNumber.push(i);
         }
-        await Promise.all(arr.map(async (i) => mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)))));
+        await Promise.all(
+          requestPagesNumber.map(async (pageNumber: number) =>
+            mutations.push(...(await MutationApi.fetchAllByPage(pageNumber, RESPONSE_LENGTH))),
+          ),
+        );
+
         isLoading.value = false;
       })
       .catch((error) => {
