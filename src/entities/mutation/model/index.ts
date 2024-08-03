@@ -18,11 +18,14 @@ export const useMutationStore = defineStore('mutation', () => {
   function updateSearchValue(value: string) {
     searchValue.value = value;
   }
+  function clearSearchValue() {
+    searchValue.value = '';
+  }
   function searchById() {
     return mutations.filter((mutation: Mutation) =>
       (mutation.maybeHgvsGdna ?? mutation.mutationId).toLowerCase().includes(searchValue.value.toLowerCase()),
     );
   }
 
-  return { mutations, isLoading, searchValue, loadMutations, updateSearchValue, searchById };
+  return { mutations, isLoading, searchValue, loadMutations, updateSearchValue, clearSearchValue, searchById };
 });
