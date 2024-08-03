@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/proxy/mutations",
+      "source": "/mutations",
       "destination": "https://testapi2.parseq.pro/mutations"
     }
   ]
