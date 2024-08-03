@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Mutation } from '../model/Mutation.ts';
+import axiosRetry from "axios-retry";
 
 export type MutationApiResponse = {
   page: {
@@ -10,6 +11,10 @@ export type MutationApiResponse = {
   resourcesTotalNumber: number;
 };
 
+axiosRetry(axios, {
+  retries: 3, // Number of retries (Defaults to 3)
+});
+
 export class MutationApi {
   static async fetchAllMutations(pageNumber: number, pageSize: number): Promise<MutationApiResponse> {
     return (
@@ -18,6 +23,7 @@ export class MutationApi {
           pageZeroBasedNumber: pageNumber,
           pageSize: pageSize,
         },
+        timeout: 10000,
       })
     ).data;
   }

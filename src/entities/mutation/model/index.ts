@@ -16,6 +16,7 @@ export const useMutationStore = defineStore('mutation', () => {
         isLoading.value = true;
         mutations.push(...response.resources);
 
+        // Создание массива с номерами страниц, чтобы на его основе создать массив аргументов для Promise.all
         const requestPagesNumber: number[] = [];
         for (let i: number = 0; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
           requestPagesNumber.push(i);
