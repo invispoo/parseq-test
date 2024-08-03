@@ -8,6 +8,5 @@ export default defineConfig({
     proxy: {
       '/mutations': 'https://testapi2.parseq.pro',
     },
-    cors: false,
   },
 });
