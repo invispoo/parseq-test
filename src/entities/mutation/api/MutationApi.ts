@@ -4,7 +4,7 @@ import { Mutation } from '../model/Mutation.ts';
 export class MutationApi {
   static async fetchAllByPage(pageNumber: number, pageSize: number): Promise<Mutation[]> {
     return (
-      await axios.get('https://testapi2.parseq.pro/mutations', {
+      await axios.get('/mutations', {
         params: {
           pageZeroBasedNumber: pageNumber,
           pageSize: pageSize,
@@ -15,7 +15,7 @@ export class MutationApi {
 
   static async fetchTotalNumber(): Promise<number> {
     return (
-      await axios.get('https://testapi2.parseq.pro/mutations', {
+      await axios.get('/mutations', {
         params: {
           pageZeroBasedNumber: 0,
           pageSize: 0,
