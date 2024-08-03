@@ -11,7 +11,7 @@ export const useMutationStore = defineStore('mutation', () => {
   async function loadMutations() {
     MutationApi.fetchTotalNumber().then(async () => {
       isLoading.value = true;
-      mutations.push(...(await MutationApi.fetchAllByPage(0, 1000)));
+      mutations.push(...(await MutationApi.fetchAllByPage(0, 5000)));
       isLoading.value = false;
     });
   }
