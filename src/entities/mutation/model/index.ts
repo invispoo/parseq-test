@@ -8,11 +8,13 @@ export const useMutationStore = defineStore('mutation', () => {
   const isLoading = ref<boolean>(false);
   const searchValue = ref<string>('');
 
+  const RESPONSE_LENGTH: number = 5000;
+
   async function loadMutations() {
     MutationApi.fetchTotalNumber().then(async (response: number) => {
       isLoading.value = true;
-      for (let i = 0; i < response; i++) {
-        mutations.push(...(await MutationApi.fetchAllByPage(i, 5000)));
+      for (let i = 0; i < Math.ceil(response / RESPONSE_LENGTH); i++) {
+        mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)));
       }
       isLoading.value = false;
     });
