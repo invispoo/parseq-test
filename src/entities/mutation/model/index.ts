@@ -5,7 +5,6 @@ import { MutationApi } from '../api/MutationApi.ts';
 
 export const useMutationStore = defineStore('mutation', () => {
   const mutations = reactive<Mutation[]>([]);
-  const mutationsTotalNumber = ref<number>(0);
   const isLoading = ref<boolean>(false);
   const searchValue = ref<string>('');
 
@@ -13,10 +12,13 @@ export const useMutationStore = defineStore('mutation', () => {
 
   async function loadMutations() {
     isLoading.value = true;
-    mutationsTotalNumber.value = await MutationApi.fetchTotalNumber();
-    for (let i = 0; i < Math.ceil(mutationsTotalNumber.value / RESPONSE_LENGTH); i++) {
-      mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)));
-    }
+    MutationApi.fetchTotalNumber()
+      .then(async (response: number) => {
+        for (let i = 0; i < Math.ceil(response / RESPONSE_LENGTH); i++) {
+          mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)));
+        }
+      })
+      .catch((error) => console.error('При загрузке данных произошла ошибка:' + error));
     isLoading.value = false;
   }
   function updateSearchValue(value: string) {
@@ -31,5 +33,5 @@ export const useMutationStore = defineStore('mutation', () => {
     );
   }
 
-  return { mutations, mutationsTotalNumber, isLoading, searchValue, loadMutations, updateSearchValue, clearSearchValue, searchById };
+  return { mutations, isLoading, searchValue, loadMutations, updateSearchValue, clearSearchValue, searchById };
 });

@@ -1,12 +1,9 @@
 <template>
-  <v-data-table-server
+  <v-data-table
     :headers="headers"
-    :items="mutationStore.searchValue ? mutationStore.searchById() : mutations"
-    :loading="isLoading"
-    v-model:page="page"
+    :items="mutationStore.searchValue ? mutationStore.searchById() : mutationStore.mutations"
+    :loading="mutationStore.isLoading"
     :items-per-page="PAGE_SIZE"
-    :items-length="mutationStore.mutationsTotalNumber"
-    @update:options="loadMutations"
     class="mutation-table"
   >
     <template #item="{ item, columns }: { item: Mutation; columns: MutationTableHeader[] }">
@@ -37,15 +34,13 @@
         </td>
       </tr>
     </template>
-  </v-data-table-server>
+  </v-data-table>
 </template>
 
 <script setup lang="ts">
 import { Mutation } from '../model/Mutation.ts';
-import { MutationApi } from '../api/MutationApi.ts';
 import { MutationTableHeader } from '../model/MutationTableHeader.ts';
 import { useMutationStore } from '../model';
-import {ref} from "vue";
 
 interface Props {
   selectedMutations: Mutation[];
@@ -56,17 +51,6 @@ defineProps<Props>();
 const emit = defineEmits(['addMutation']);
 
 const PAGE_SIZE: number = 20;
-const page = ref<number>(1);
-
-const mutations = ref<Mutation[]>([]);
-
-const isLoading = ref<boolean>(false);
-
-const loadMutations = async () => {
-  isLoading.value = true;
-  mutations.value = await MutationApi.fetchAllByPage(page.value - 1, PAGE_SIZE);
-  isLoading.value = false;
-};
 
 const mutationStore = useMutationStore();
 

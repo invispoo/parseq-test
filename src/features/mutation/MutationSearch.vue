@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { useMutationStore } from '../../entities/mutation/model';
-import {onBeforeUnmount, ref} from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 
 const mutationStore = useMutationStore();
 
