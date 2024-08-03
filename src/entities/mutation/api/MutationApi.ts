@@ -12,7 +12,7 @@ export type MutationApiResponse = {
 };
 
 axiosRetry(axios, {
-  retries: 3, // Number of retries (Defaults to 3)
+  retries: 3,
 });
 
 export class MutationApi {
@@ -24,6 +24,7 @@ export class MutationApi {
           pageSize: pageSize,
         },
         timeout: 10000,
+        decompress: false,
       })
     ).data;
   }
