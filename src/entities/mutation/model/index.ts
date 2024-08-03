@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Mutation } from './Mutation.ts';
 import { reactive, ref } from 'vue';
-import { MutationApi } from '../api/MutationApi.ts';
+import {MutationApi, MutationApiResponse} from '../api/MutationApi.ts';
 
 export const useMutationStore = defineStore('mutation', () => {
   const mutations = reactive<Mutation[]>([]);
@@ -12,9 +12,10 @@ export const useMutationStore = defineStore('mutation', () => {
 
   async function loadMutations() {
     isLoading.value = true;
-    MutationApi.fetchTotalNumber()
-      .then(async (response: number) => {
-        for (let i = 0; i < Math.ceil(response / RESPONSE_LENGTH); i++) {
+    MutationApi.fetchAllMutations(0, RESPONSE_LENGTH)
+      .then(async (response: MutationApiResponse) => {
+        mutations.push(...response.resources);
+        for (let i = 1; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
           mutations.push(...(await MutationApi.fetchAllByPage(i, RESPONSE_LENGTH)));
         }
       })

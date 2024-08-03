@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Mutation } from '../model/Mutation.ts';
 
-type MutationApiResponse = {
+export type MutationApiResponse = {
   page: {
     zeroBasedNumber: number;
     size: number;
