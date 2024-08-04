@@ -8,7 +8,7 @@ export const useMutationStore = defineStore('mutation', () => {
   const isLoading = ref<boolean>(false);
   const searchValue = ref<string>('');
 
-  const RESPONSE_LENGTH: number = 2000;
+  const RESPONSE_LENGTH: number = 4000;
 
   async function loadMutations() {
     MutationApi.fetchAllMutations(0, 0)
