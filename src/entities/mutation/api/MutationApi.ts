@@ -13,6 +13,9 @@ export type MutationApiResponse = {
 
 axiosRetry(axios, {
   retries: 3,
+  retryCondition: (error) => {
+    return error.code === 'ECONNABORTED';
+  },
 });
 
 export class MutationApi {
@@ -23,8 +26,7 @@ export class MutationApi {
           pageZeroBasedNumber: pageNumber,
           pageSize: pageSize,
         },
-        //timeout: 10000,
-        //decompress: false,
+        timeout: 15000,
       })
     ).data;
   }
