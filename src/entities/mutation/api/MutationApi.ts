@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Mutation } from '../model/Mutation.ts';
-import axiosRetry from "axios-retry";
+import axiosRetry, { isNetworkOrIdempotentRequestError } from 'axios-retry';
 
 export type MutationApiResponse = {
   page: {
@@ -11,10 +11,14 @@ export type MutationApiResponse = {
   resourcesTotalNumber: number;
 };
 
+// Код 'ECONNABORTED' появится в случае отмены запроса после истечения установленного в запросе таймаута (10 секунд),
+// поэтому в интерцепторе из библиотеки axios-retry необходимо прописать данный код как условие перезапуска запроса
 axiosRetry(axios, {
   retries: 3,
-  retryCondition: (error) => {
-    return error.code === 'ERR_CANCELED';
+  retryDelay: () => 1000,
+  shouldResetTimeout: true,
+  retryCondition: (error: AxiosError) => {
+    return isNetworkOrIdempotentRequestError(error) || error.code === 'ECONNABORTED';
   },
 });
 
@@ -26,7 +30,7 @@ export class MutationApi {
           pageZeroBasedNumber: pageNumber,
           pageSize: pageSize,
         },
-        signal: AbortSignal.timeout(500)
+        timeout: 10000,
       })
     ).data;
   }
