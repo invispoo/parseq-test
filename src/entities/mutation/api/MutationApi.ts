@@ -14,7 +14,7 @@ export type MutationApiResponse = {
 // Код 'ECONNABORTED' появится в случае отмены запроса после истечения установленного в запросе таймаута (10 секунд),
 // поэтому в интерцепторе из библиотеки axios-retry необходимо прописать данный код как условие перезапуска запроса
 axiosRetry(axios, {
-  retries: 3,
+  retries: 5,
   retryDelay: () => 1000,
   shouldResetTimeout: true,
   retryCondition: (error: AxiosError) => {
