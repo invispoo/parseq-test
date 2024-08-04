@@ -27,8 +27,7 @@ export const useMutationListStore = defineStore('mutationList', () => {
     searchValue.value = value;
   }
   function searchByName() {
-    return mutationLists.filter((list) => list.name.toLowerCase()
-        .includes(searchValue.value.toLowerCase()));
+    return mutationLists.filter((list) => list.name.toLowerCase().includes(searchValue.value.toLowerCase()));
   }
 
   return {

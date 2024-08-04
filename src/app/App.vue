@@ -1,6 +1,6 @@
 <template>
   <v-app full-height>
-    <v-container class="w-75">
+    <v-container class="w-75 pt-12">
       <MutationListsHeader />
       <MutationLists class="mt-10" />
     </v-container>

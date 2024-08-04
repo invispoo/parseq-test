@@ -2,7 +2,8 @@
   <v-text-field
     v-model="mutationIdSearch"
     @update:model-value="mutationStore.updateSearchValue(mutationIdSearch)"
-    :disabled="mutationStore.isLoading"
+    :disabled="!mutationStore.mutations.length"
+    :loading="!mutationStore.mutations.length"
     density="compact"
     variant="outlined"
     hide-details
@@ -12,9 +13,13 @@
 
 <script setup lang="ts">
 import { useMutationStore } from '../../entities/mutation/model';
-import { ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 
 const mutationStore = useMutationStore();
 
 const mutationIdSearch = ref<string>('');
+
+onBeforeUnmount(() => {
+  mutationStore.clearSearchValue();
+});
 </script>
