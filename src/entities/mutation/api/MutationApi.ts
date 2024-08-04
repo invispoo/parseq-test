@@ -14,7 +14,7 @@ export type MutationApiResponse = {
 axiosRetry(axios, {
   retries: 3,
   retryCondition: (error) => {
-    return error.code === 'ECONNABORTED';
+    return error.code === 'ERR_CANCELED';
   },
 });
 
@@ -26,7 +26,7 @@ export class MutationApi {
           pageZeroBasedNumber: pageNumber,
           pageSize: pageSize,
         },
-        timeout: 15000,
+        signal: AbortSignal.timeout(500)
       })
     ).data;
   }
