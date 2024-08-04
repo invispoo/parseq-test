@@ -11,14 +11,14 @@ export const useMutationStore = defineStore('mutation', () => {
   const RESPONSE_LENGTH: number = 3000;
 
   async function loadMutations() {
-    MutationApi.fetchAllMutations(0, 0)
+    MutationApi.fetchAllMutations(0, RESPONSE_LENGTH)
       .then(async (response: MutationApiResponse) => {
         isLoading.value = true;
         mutations.push(...response.resources);
 
         // Создание массива с номерами страниц, чтобы на его основе создать массив аргументов для Promise.all
         const requestPagesNumber: number[] = [];
-        for (let i: number = 0; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
+        for (let i: number = 1; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
           requestPagesNumber.push(i);
         }
         await Promise.all(
