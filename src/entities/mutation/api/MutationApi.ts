@@ -23,8 +23,8 @@ export class MutationApi {
           pageZeroBasedNumber: pageNumber,
           pageSize: pageSize,
         },
-        timeout: 10000,
-        decompress: false,
+        //timeout: 10000,
+        //decompress: false,
       })
     ).data;
   }
