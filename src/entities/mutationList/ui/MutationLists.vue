@@ -5,6 +5,7 @@
         ? mutationListStore.searchByName()
         : mutationListStore.mutationLists"
       :cols="4"
+      :key="mutationList.id"
     >
       <v-card @click="clickedList = mutationList">
         <v-card-title>
@@ -12,7 +13,10 @@
         </v-card-title>
         <v-card-text>
           <v-list>
-            <v-list-item v-for="mutation in mutationList.mutations">
+            <v-list-item
+              v-for="mutation in mutationList.mutations"
+              :key="mutation.maybeHgvsGdna ?? mutation.mutationId"
+            >
               {{ mutation.mutationType === 'SNP' ? mutation.maybeHgvsGdna : mutation.mutationId }}
             </v-list-item>
           </v-list>

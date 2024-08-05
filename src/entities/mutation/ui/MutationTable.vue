@@ -8,7 +8,10 @@
   >
     <template #item="{ item, columns }: { item: Mutation; columns: MutationTableHeader[] }">
       <tr>
-        <td v-for="column in columns">
+        <td
+          v-for="column in columns"
+          :key="column.key"
+        >
           <template v-if="column.key === 'addMutation'">
             <v-btn
               @click="emit('addMutation', item)"
