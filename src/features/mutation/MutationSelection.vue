@@ -12,7 +12,10 @@
     v-if="selectedMutations.length"
     class="mutation-list"
   >
-    <v-list-item v-for="(mutation, index) in selectedMutations">
+    <v-list-item
+      v-for="(mutation, index) in selectedMutations"
+      :key="mutation.maybeHgvsGdna ?? mutation.mutationId"
+    >
       <v-card variant="plain">
         {{ mutation.mutationId }}
       </v-card>
