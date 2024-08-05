@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import { Mutation } from './Mutation.ts';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { MutationApi, MutationApiResponse } from '../api/MutationApi.ts';
 
 export const useMutationStore = defineStore('mutation', () => {
-  const mutations = reactive<Mutation[]>([]);
+  const mutations: Mutation[] = [];
   const isLoading = ref<boolean>(false);
   const searchValue = ref<string>('');
 
