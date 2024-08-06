@@ -5,6 +5,8 @@
     <v-btn
       @click="addMutationDialog = true"
       color="primary"
+      :loading="mutationStore.isLoading"
+      :disabled="mutationStore.isLoading"
     >
       Добавить
     </v-btn>
@@ -28,8 +30,10 @@ import MutationListSearch from '../../../features/mutationList/MutationListSearc
 import { useMutationListStore } from '../model';
 import { ref } from 'vue';
 import AddMutationListModal from '../../../features/mutationList/AddMutationListModal.vue';
+import {useMutationStore} from "../../mutation/model";
 
 const mutationListStore = useMutationListStore();
+const mutationStore = useMutationStore();
 
 const addMutationDialog = ref<boolean>(false);
 </script>

@@ -1,31 +1,17 @@
 import { defineStore } from 'pinia';
 import { Mutation } from './Mutation.ts';
 import { ref } from 'vue';
-import { MutationApi, MutationApiResponse } from '../api/MutationApi.ts';
+import { MutationApi } from '../api/MutationApi.ts';
 
 export const useMutationStore = defineStore('mutation', () => {
   const mutations: Mutation[] = [];
-  const isLoading = ref<boolean>(false);
+  const isLoading = ref<boolean>(true);
   const searchValue = ref<string>('');
 
-  const RESPONSE_LENGTH: number = 3000;
-
   async function loadMutations() {
-    MutationApi.fetchAllMutations(0, RESPONSE_LENGTH)
-      .then(async (response: MutationApiResponse) => {
-        isLoading.value = true;
-        mutations.push(...response.resources);
-
-        // Создание массива с номерами страниц, чтобы на его основе создать массив аргументов для Promise.all
-        const requestPagesNumber: number[] = [];
-        for (let i: number = 1; i < Math.ceil(response.resourcesTotalNumber / RESPONSE_LENGTH); i++) {
-          requestPagesNumber.push(i);
-        }
-        await Promise.all(
-          requestPagesNumber.map(async (pageNumber: number) =>
-            mutations.push(...(await MutationApi.fetchAllByPage(pageNumber, RESPONSE_LENGTH))),
-          ),
-        );
+    MutationApi.fetchTotalNumber()
+      .then(async (response: number) => {
+        mutations.push(...(await MutationApi.fetchAllByPage(0, response)));
         isLoading.value = false;
       })
       .catch((error) => {
