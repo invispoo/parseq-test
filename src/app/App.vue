@@ -9,12 +9,7 @@
 
 <script setup lang="ts">
 import MutationLists from '../entities/mutationList/ui/MutationLists.vue';
-import { useMutationStore } from '../entities/mutation/model';
 import MutationListsHeader from '../entities/mutationList/ui/MutationListsHeader.vue';
-
-const mutationStore = useMutationStore();
-
-mutationStore.loadMutations();
 </script>
 
 <style lang="scss">
