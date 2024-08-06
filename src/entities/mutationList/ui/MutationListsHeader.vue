@@ -35,5 +35,7 @@ import {useMutationStore} from "../../mutation/model";
 const mutationListStore = useMutationListStore();
 const mutationStore = useMutationStore();
 
+mutationStore.loadMutations();
+
 const addMutationDialog = ref<boolean>(false);
 </script>
